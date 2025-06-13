@@ -19,11 +19,11 @@ export const authenticateToken = (authService: AuthService) => {
       const decoded = authService.verifyToken(token);
       req.userId = decoded.userId;
       next();
+      return;
     } catch (error) {
       res.status(403).json({ error: "Invalid or expired token" });
       return;
     }
-    next();
   };
 };
 

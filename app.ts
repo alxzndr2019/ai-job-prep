@@ -4,6 +4,7 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { config } from "./src/config/environment";
 import { errorHandler, notFoundHandler } from "./src/middleware/errorHandler";
+import morgan from "morgan";
 
 // Routes
 import authRoutes from "./src/routes/auth";
@@ -35,6 +36,9 @@ app.use(
 // Body parsing middleware
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
+
+// HTTP request logging
+app.use(morgan("dev"));
 
 // Health check
 app.get("/health", (req, res) => {

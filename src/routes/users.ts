@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { UserController } from "../controllers/UserContoller";
+import { UserController } from "../controllers/UserController";
 import { AuthService } from "../services/AuthService";
 import { authenticateToken } from "../middleware/auth";
 import Joi from "joi";

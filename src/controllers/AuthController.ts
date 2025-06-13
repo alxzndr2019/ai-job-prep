@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { AuthService } from "../services/AuthService";
 
 interface AuthRequest extends Request {
@@ -51,7 +51,11 @@ export class AuthController {
     }
   };
 
-  getProfile = async (req: AuthRequest, res: Response): Promise<void> => {
+  getProfile = async (
+    req: AuthRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const userRepository = new (
         await import("../repositories/UserRepository")
@@ -69,9 +73,7 @@ export class AuthController {
 
       res.json({ user: userResponse });
     } catch (error) {
-      res.status(500).json({
-        error: error instanceof Error ? error.message : "Failed to get profile",
-      });
+      next(error);
     }
   };
 }

@@ -23,6 +23,10 @@ export const errorHandler = (
     timestamp: new Date().toISOString(),
   });
 
+  if (res.headersSent) {
+    return next(error);
+  }
+
   res.status(statusCode).json({
     error: message,
     ...(process.env.NODE_ENV === "development" && { stack: error.stack }),

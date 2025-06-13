@@ -71,7 +71,13 @@ export class AIService {
       jobDescription: jobDescription,
     });
 
-    return JSON.parse(result.text);
+    // Log the raw AI response for debugging
+    console.log("AI raw response:", result.text);
+
+    // Extract the first JSON object from the response
+    const match = result.text.match(/({[\s\S]*})/);
+    if (!match) throw new Error("No JSON found in AI response");
+    return JSON.parse(match[0]);
   }
 
   async calculateMatchScore(analysis: JobAnalysis): Promise<number> {
@@ -106,7 +112,7 @@ export class AIService {
       Improvement Areas: {improvementAreas}
       Current Skills: {currentSkills}
       
-      Create a learning plan with the following structure:
+      Create a learning plan with the following structure (use the exact case-sensitive values for resource type: "video", "course", "tutorial", "documentation", "book", "practice", "blog", "article"):
       {{
         "timeframe": "3-6 months",
         "phases": [
@@ -142,6 +148,8 @@ export class AIService {
         "totalEstimatedHours": 120,
         "priorityOrder": ["skill1", "skill2", "skill3"]
       }}
+      
+      Only use the following exact values for resource type: "video", "course", "tutorial", "documentation", "book", "practice", "blog", "article" (case-sensitive, do not use capitalized or plural forms).
       
       Focus on practical, hands-on learning with real projects. Include resources from:
       - YouTube tutorials

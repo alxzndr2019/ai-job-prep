@@ -178,6 +178,8 @@ export enum ResourceType {
   DOCUMENTATION = "documentation",
   BOOK = "book",
   PRACTICE = "practice",
+  BLOG = "blog",
+  ARTICLE = "article",
 }
 
 export enum DifficultyLevel {

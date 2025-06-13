@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { JobAnalysisService } from "../services/JobAnalysisService";
 
 interface AuthRequest extends Request {
@@ -12,7 +12,11 @@ export class JobController {
     this.jobAnalysisService = new JobAnalysisService();
   }
 
-  analyzeJob = async (req: AuthRequest, res: Response): Promise<void> => {
+  analyzeJob = async (
+    req: AuthRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const { jobDescription, jobTitle, companyName } = req.body;
       const userId = req.userId!;
@@ -29,9 +33,7 @@ export class JobController {
         analysis,
       });
     } catch (error) {
-      res.status(500).json({
-        error: error instanceof Error ? error.message : "Job analysis failed",
-      });
+      next(error);
     }
   };
 
